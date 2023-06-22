@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2084b4f8d84c8aa366251a1df41a4a, type: 3}
+  m_Name: PlayerSettings
+  m_EditorClassIdentifier: 
+  Speed: 5
+  RotateSpeed: 100
+  ProjectileSpeed: 10
+  ShipModel: {fileID: 5892077198831100613, guid: 04a948854edc7ed438226536ba69d6db, type: 3}
+  ProjectilePrefab: {fileID: 5356389127865204328, guid: ab5a0e592c7525548b229c9ee24ec466, type: 3}
