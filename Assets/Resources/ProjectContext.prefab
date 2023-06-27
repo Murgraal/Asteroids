@@ -74,4 +74,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab61d1f93732664aa3bb52818d3d0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameStateManagerPrefab: {fileID: 6237937209975343547, guid: 573f9b37386cecf4f997db9c7f7694f7, type: 3}
+  _gameStateManagerPrefab: {fileID: 6237937209975343547, guid: 573f9b37386cecf4f997db9c7f7694f7, type: 3}
+  _gameDataContainer: {fileID: 11400000, guid: 3bed8469979d64459bb2df3560eb9aa8, type: 2}

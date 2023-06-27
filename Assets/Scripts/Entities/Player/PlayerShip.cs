@@ -1,6 +1,8 @@
 ﻿using System;
 using Data.ScriptableObjects;
+using Entities.General;
 using Gameflow;
+using Systems.Messaging;
 using UnityEngine;
 using Zenject;
 
@@ -28,7 +30,15 @@ namespace Entities.Player
             }
             ShipFunctions.RotateShip(_inputData, transform, _settings.RotateSpeed);
         }
-        
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("Asteroid"))
+            {
+                NotificationSystem.Notify(NotificationType.PlayerDied);
+            }
+        }
+
         private void FixedUpdate()
         {
             if (_inputData.ForwardPressed)

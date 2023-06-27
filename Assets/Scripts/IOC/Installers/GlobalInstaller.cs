@@ -1,4 +1,4 @@
-using Entities.Saucer;
+using Data.ScriptableObjects;
 using Gameflow;
 using UnityEngine;
 using Zenject;
@@ -15,7 +15,7 @@ namespace IOC.Installers
         {
             var gm = Container.InstantiatePrefab(_gameStateManagerPrefab);
             Container.BindInstance(gm).AsSingle().NonLazy();
-            Container.BindInstance(_gameDataContainer).AsSingle();
+            Container.BindInstance(_gameDataContainer).AsSingle().NonLazy();
         }
     }
 }

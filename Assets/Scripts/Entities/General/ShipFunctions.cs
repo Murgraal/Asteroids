@@ -2,7 +2,7 @@
 using Gameflow;
 using UnityEngine;
 
-namespace Entities.Player
+namespace Entities.General
 {
     public static class ShipFunctions
     {

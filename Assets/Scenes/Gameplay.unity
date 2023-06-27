@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -234,7 +234,9 @@ MonoBehaviour:
   _asteroidPrefab: {fileID: -1454994252544742733, guid: 379eb5ab0a15eb546abb88acc874f3f7, type: 3}
   _fragmentPrefab: {fileID: 8804582635046522861, guid: 8526753d73cb97d4aad87cc7faf4903f, type: 3}
   _projectilePrefab: {fileID: 5356389127865204328, guid: ab5a0e592c7525548b229c9ee24ec466, type: 3}
+  _saucerPrefab: {fileID: 4681857288804969482, guid: 4171362ee723248c78aa452a104a267a, type: 3}
   _inputData: {fileID: 11400000, guid: 50f07b2f96c0643418f602cc338785a1, type: 2}
+  _levels: {fileID: 11400000, guid: c1c294503d0cb4c97ba8bc33d1e0ad0f, type: 2}
 --- !u!114 &658931924
 MonoBehaviour:
   m_ObjectHideFlags: 0

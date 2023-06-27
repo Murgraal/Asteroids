@@ -4,19 +4,11 @@ namespace Gameflow
 {
     public static class GameplayFunctions
     {
-        public static bool IsPositionInsideOfArea(Vector2 position, float maxY, float minY, float maxX, float minX)
+        public static Vector2 GetRandomPositionOnScreen()
         {
-            return true;
-        }
-    
-        public static Vector2 GetRandomDirectionFromPosition(Vector2 currentPos)
-        {
-            return Vector2.left;
-        }
-
-        public static Vector2 GetPositionOnOppositeSideOfPlayArea()
-        {
-            return Vector2.up;
+            var screenPos = new Vector3(Random.Range(0f, Screen.height), Random.Range(0, Screen.height), 0);
+            var spawnPos = Camera.current.ScreenToWorldPoint(screenPos);
+            return spawnPos;
         }
     }
 }

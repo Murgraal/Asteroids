@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Entities.Player
+namespace Entities.General
 {
     public class KeepInScreen : MonoBehaviour
     {

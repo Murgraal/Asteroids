@@ -1,4 +1,6 @@
 using System;
+using Data.ScriptableObjects;
+using Entities.General;
 using Entities.Player;
 using Gameflow;
 using UnityEngine;
@@ -11,10 +13,9 @@ namespace Entities.Saucer
 
         [Inject] private GameEntityFactory<Projectile> _projectileFactory;
         [Inject] private GameDataContainer _gameData;
-        private float _shootInterval;
+        [SerializeField] private float _shootInterval;
         private float _shootTimer;
-
-
+        
         private void Update()
         {
             _shootTimer += Time.deltaTime;
@@ -22,25 +23,8 @@ namespace Entities.Saucer
             if (_shootTimer >= _shootInterval)
             {
                 ShipFunctions.Shoot(transform.position,_gameData.Data.PlayerPosition,_projectileFactory);
+                _shootTimer = _shootInterval;
             }
         }
-    }
-
-    public class GameDataContainer : ScriptableObject
-    {
-        public GameData Data;
-
-        public void Reset()
-        {
-            Data = new GameData();
-        }
-    }
-
-    public class GameData
-    {
-        public Vector2 PlayerPosition;
-        public int Score = 0;
-        public int Lives = 5;
-        public int Level = 1;
     }
 }

@@ -2,17 +2,20 @@ using Gameflow;
 using UnityEngine;
 using Zenject;
 
-namespace Entities.Player
+namespace Entities.General
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class Projectile : GameEntity
     {
         private Rigidbody2D _rigid;
+        [SerializeField] private Collider2D _col;
         public Rigidbody2D Rigid => _rigid;
 
         private float _despawnTimer;
-        private bool hasHit;
-    
+        [SerializeField] private float _timeToDespawn;
+
+        private bool _setToDespawn;
+
         [Inject] private GameEntityFactory<Projectile> _projectileFactory;
         void Awake()
         {
@@ -22,22 +25,26 @@ namespace Entities.Player
         private void Update()
         {
             _despawnTimer += Time.deltaTime;
-            if (_despawnTimer >= 5f && !hasHit)
+            if (_despawnTimer >= _timeToDespawn)
+            {
+                _setToDespawn = true;
+            }
+            if (_setToDespawn)
             {
                 Despawn();
             }
         }
-        private void OnCollisionEnter2D(Collision2D collision)
+
+        public void MarkForDespawn()
         {
-            if (hasHit) return;
-            hasHit = true;
-            Despawn();
+            _setToDespawn = true;
         }
 
         public override void Reset()
         {
-            hasHit = false;
             _despawnTimer = 0;
+            _col.enabled = true;
+            _setToDespawn = false;
         }
 
         private void Despawn()

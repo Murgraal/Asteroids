@@ -1,6 +1,6 @@
 ﻿using System;
+using Entities;
 using Entities.Player;
-using UnityEngine;
 using Zenject;
 
 namespace Gameflow
@@ -9,7 +9,7 @@ namespace Gameflow
     {
         protected override void OnSpawned(T item)
         {
-            
+            item.OnSpawned();
         }
 
         protected override void Reinitialize(T item)
@@ -21,21 +21,7 @@ namespace Gameflow
         protected override void OnDespawned(T item)
         {
             item.gameObject.SetActive(false);
+            item.OnDespawned();
         }
     }
-}
-
-public abstract class GameEntity :  MonoBehaviour   
-{
-    
-    public void OnSpawned()
-    {
-        
-    }
-
-    public void OnDespawned()
-    {
-        
-    }
-    public virtual void Reset(){}
 }

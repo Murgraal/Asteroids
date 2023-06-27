@@ -1,4 +1,5 @@
-﻿using Entities.Player;
+﻿using Entities.General;
+using Entities.Player;
 using UnityEngine;
 
 namespace Data.ScriptableObjects

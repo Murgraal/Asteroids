@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Gameflow;
 using UnityEngine;
+using Utils.Extensions;
 
 namespace Entities.Asteroid
 {
@@ -18,6 +19,83 @@ namespace Entities.Asteroid
             }
 
             return result;
+        }
+        
+        public static List<bool[,]> DeclareHalvedDimensions(bool [,] existingSpawnGrid)
+        {
+            var halvedSpawnGrid = new List<bool[,]>();
+
+            var sizeX = existingSpawnGrid.GetLength(0);
+            var sizeY = existingSpawnGrid.GetLength(1);
+
+            var canHalveX = sizeX > 2;
+            var canHalveY = sizeY > 2;
+            
+            if (canHalveX && canHalveY)
+            {
+                var coinFlip = Random.Range(0, 2);
+
+                if (coinFlip == 0)
+                {
+                    halvedSpawnGrid = existingSpawnGrid.HalveX();
+                }
+                else
+                {
+                    halvedSpawnGrid = existingSpawnGrid.HalveY();
+                }
+            }
+            else if(canHalveX)
+            {
+                halvedSpawnGrid = existingSpawnGrid.HalveX();
+            }
+            else if (canHalveY)
+            {
+                halvedSpawnGrid = existingSpawnGrid.HalveY();
+            }
+            else
+            {
+                return null;
+            }
+
+            return halvedSpawnGrid;
+        }
+        
+        public static void HalveAsteroid(bool [,] existingSpawnGrid, Asteroid asteroid, GameEntityFactory<Asteroid> asteroidFactory)
+        {
+            var halvedSpawnGrid = DeclareHalvedDimensions(existingSpawnGrid);
+
+            if (halvedSpawnGrid == null)
+            {
+                asteroid.Despawn();
+                return;
+            }
+            
+            var asteroidSplits = new []{asteroidFactory.Spawn(),asteroidFactory.Spawn()};
+            
+            for(int i = 0; i < asteroidSplits.Length; i++)
+            {
+                var newPos = asteroid.transform.position;
+
+                var width = asteroid.SpawnGrid.GetLength(0);
+                var height = asteroid.SpawnGrid.GetLength(1);
+                
+                if (i % 2 == 0)
+                {
+                    newPos.x +=  width / 2f;
+                    newPos.y += height / 2f;
+                }
+                else
+                {
+                    newPos.x -= width / 2f;
+                    newPos.y -= height / 2f;
+                }
+                
+                var newAsteroid = asteroidSplits[i];
+                newAsteroid.transform.position = newPos;
+                newAsteroid.Initialize(halvedSpawnGrid[i]);
+            }
+
+            asteroid.Despawn();
         }
 
         public static List<AsteroidFragment> SpawnFragments(bool[,] spawnGrid, Transform parent,GameEntityFactory<AsteroidFragment> fragmentFactory)
