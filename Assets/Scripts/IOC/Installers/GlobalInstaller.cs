@@ -13,9 +13,10 @@ namespace IOC.Installers
         
         public override void InstallBindings()
         {
-            var gm = Container.InstantiatePrefab(_gameStateManagerPrefab);
-            Container.BindInstance(gm).AsSingle().NonLazy();
             Container.BindInstance(_gameDataContainer).AsSingle().NonLazy();
+            _gameDataContainer.Reset();
+            var gm = Container.InstantiatePrefab(_gameStateManagerPrefab).GetComponent<GameStateManager>();
+            Container.BindInstance(gm).AsSingle().NonLazy();
         }
     }
 }

@@ -9,9 +9,10 @@ namespace Gameflow
     {
         protected override void OnSpawned(T item)
         {
+            item.gameObject.SetActive(true);
             item.OnSpawned();
         }
-
+        
         protected override void Reinitialize(T item)
         {
             item.Reset();

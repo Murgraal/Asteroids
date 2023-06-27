@@ -21,25 +21,32 @@ namespace Entities.Asteroid
         private Rigidbody2D _rigid;
 
         public bool[,] SpawnGrid => _spawnGrid;
-
         
-
-        public void Initialize(bool [,] spawnGrid)
+        public void Initialize(bool [,] spawnGrid,bool launchRelativeToHitObject = false, Vector3 hitObjectPosition = new Vector3())
         {
             _rigid = GetComponent<Rigidbody2D>();
             _hit = false;
             _spawnGrid = spawnGrid;
             _fragments = AsteroidFunctions.SpawnFragments(_spawnGrid, transform,_fragmentFactory);
-            var delta = (Vector3)GameplayFunctions.GetRandomPositionOnScreen() - transform.position;
-            _rigid.AddForce(delta * _flySpeed,ForceMode2D.Impulse);
+            _rigid.mass = _fragments.Count;
+            
+            if (launchRelativeToHitObject)
+            {
+                var delta = transform.position - hitObjectPosition;
+                _rigid.AddForce(delta.normalized * _flySpeed,ForceMode2D.Impulse);
+            }
+            else
+            {
+                GameplayFunctions.LaunchInRandomDirection(_rigid,_flySpeed);
+            }
         }
         
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.transform.CompareTag("Projectile") && !_hit)
+            if (collision.transform.CompareTag("PlayerProjectile") && !_hit)
             {
-                collision.transform.GetComponent<Projectile>().MarkForDespawn();
-                AsteroidFunctions.HalveAsteroid(_spawnGrid,this,_asteroidFactory);
+                _hit = true;
+                AsteroidFunctions.HalveAsteroid(_spawnGrid,this,_asteroidFactory,collision.transform);
             }
         }
         

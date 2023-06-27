@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2084b4f8d84c8aa366251a1df41a4a, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  Speed: 5
-  RotateSpeed: 100
+  Speed: 15
+  RotateSpeed: 150
   ProjectileSpeed: 10
   ShipModel: {fileID: 5892077198831100613, guid: 04a948854edc7ed438226536ba69d6db, type: 3}
   ProjectilePrefab: {fileID: 5356389127865204328, guid: ab5a0e592c7525548b229c9ee24ec466, type: 3}

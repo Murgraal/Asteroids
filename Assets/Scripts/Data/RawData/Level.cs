@@ -9,6 +9,9 @@ namespace Data.RawData
     {
         public int AsteroidCount => _asteroidCount;
         public int SaucerCount => _saucerCount;
+        
+        [SerializeField] private int _asteroidCount;
+        [SerializeField] private int _saucerCount;
 
         public void AddAsteroidCount()
         {
@@ -39,8 +42,5 @@ namespace Data.RawData
                 NotificationSystem.Notify(NotificationType.LevelFinished);
             }
         }
-        
-        [SerializeField] private int _asteroidCount;
-        [SerializeField] private int _saucerCount;
     }
 }

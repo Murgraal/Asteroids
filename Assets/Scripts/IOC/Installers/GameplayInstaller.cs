@@ -28,8 +28,7 @@ namespace IOC.Installers
             Container.BindInstance(_fragmentPrefab).AsSingle().NonLazy();
             Container.BindInstance(_inputData).AsSingle().NonLazy();
             Container.BindInstance(_levels).AsSingle().NonLazy();
-
-
+            
             Container.BindMemoryPool<AsteroidFragment, GameEntityFactory<AsteroidFragment>>()
                 .FromComponentInNewPrefab(_fragmentPrefab).NonLazy();
             Container.BindMemoryPool<Asteroid, GameEntityFactory<Asteroid>>().FromComponentInNewPrefab(_asteroidPrefab).NonLazy();

@@ -4,6 +4,7 @@ using Data.RawData;
 using Data.ScriptableObjects;
 using Entities;
 using Entities.Asteroid;
+using Entities.General;
 using Entities.Saucer;
 using Systems.InputHandling;
 using Systems.Messaging;
@@ -20,11 +21,11 @@ namespace Gameflow
         [Inject] private GameEntityFactory<Asteroid> _asteroidFactory;
         [Inject] private GameDataContainer _gameDataContainer;
         [Inject] private LevelContainer _levelContainer;
-        private GameStateManager _gameStateManager;
+        [Inject] private GameStateManager _gameStateManager;
         [Inject] private GameEntityFactory<Saucer> _saucerFactory;
 
         [SerializeField] private Level _currentLevel;
-
+        
         private void OnEnable()
         {
             NotificationSystem.OnNotify += OnNotificationReceived;
@@ -34,20 +35,6 @@ namespace Gameflow
         {
             NotificationSystem.OnNotify -= OnNotificationReceived;
         }
-        
-        public IEnumerator Start()
-        {
-            _gameDataContainer.Reset();
-            _gameStateManager = FindObjectOfType<GameStateManager>();
-            
-            while (Camera.current == null)
-            {
-                yield return null;
-            }
-            
-            StartLevel(_gameDataContainer.Data.Level);
-        }
-
         
         private void OnNotificationReceived(NotificationType notificationType)
         {
@@ -61,8 +48,20 @@ namespace Gameflow
                 LevelFinished();
             }
 
+            if (notificationType == NotificationType.SaucerSpawned)
+            {
+                _gameDataContainer.Data.Score += 10;
+                _currentLevel.AddSaucerCount();
+            }
+
+            if (notificationType == NotificationType.SaucerDespawned)
+            {
+                _currentLevel.ReduceSaucerCount();
+            }
+
             if (notificationType == NotificationType.AsteroidDespawned)
             {
+                _gameDataContainer.Data.Score += 5;
                 _currentLevel.ReduceAsteroidCount();
             }
 
@@ -70,6 +69,15 @@ namespace Gameflow
             {
                 _currentLevel.AddAsteroidCount();
             }
+        }
+        
+        public void Start()
+        {
+            _gameDataContainer.Data.PlayFieldBoundaries = new PlayField(
+                Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y,
+                Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x);
+            
+            StartLevel(_gameDataContainer.Data.Level);
         }
         
         private void StartLevel(int currentLevel)
@@ -111,10 +119,12 @@ namespace Gameflow
         private void PlayerDied()
         {
             _gameDataContainer.Data.Lives--;
+            
             SceneManager.LoadScene("Gameplay");
-            if (_gameDataContainer.Data.Lives == 0)
+            
+            if (_gameDataContainer.Data.Lives <= 0)
             {
-                _gameStateManager.GoToMenus();
+                _gameStateManager.GoToScoreScreen();
             }
             else
             {

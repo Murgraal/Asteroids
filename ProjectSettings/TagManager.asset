@@ -8,6 +8,8 @@ TagManager:
   - Asteroid
   - Ship
   - Enemy
+  - EnemyProjectile
+  - PlayerProjectile
   layers:
   - Default
   - TransparentFX
@@ -17,9 +19,9 @@ TagManager:
   - UI
   - Projectile
   - Player
-  - EnemyShips
-  - 
-  - 
+  - Enemy
+  - PlayerProjectile
+  - EnemyProjectile
   - 
   - 
   - 

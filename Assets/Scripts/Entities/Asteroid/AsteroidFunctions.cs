@@ -21,15 +21,15 @@ namespace Entities.Asteroid
             return result;
         }
         
-        public static List<bool[,]> DeclareHalvedDimensions(bool [,] existingSpawnGrid)
+        public static List<bool[,]> DeclareHalvedDimensions(bool [,] existingSpawnGrid, int minSize = 2)
         {
             var halvedSpawnGrid = new List<bool[,]>();
 
             var sizeX = existingSpawnGrid.GetLength(0);
             var sizeY = existingSpawnGrid.GetLength(1);
 
-            var canHalveX = sizeX > 2;
-            var canHalveY = sizeY > 2;
+            var canHalveX = sizeX > minSize;
+            var canHalveY = sizeY > minSize;
             
             if (canHalveX && canHalveY)
             {
@@ -60,9 +60,9 @@ namespace Entities.Asteroid
             return halvedSpawnGrid;
         }
         
-        public static void HalveAsteroid(bool [,] existingSpawnGrid, Asteroid asteroid, GameEntityFactory<Asteroid> asteroidFactory)
+        public static void HalveAsteroid(bool [,] existingSpawnGrid, Asteroid asteroid, GameEntityFactory<Asteroid> asteroidFactory, Transform hitTransform = null)
         {
-            var halvedSpawnGrid = DeclareHalvedDimensions(existingSpawnGrid);
+            var halvedSpawnGrid = DeclareHalvedDimensions(existingSpawnGrid, 1);
 
             if (halvedSpawnGrid == null)
             {
@@ -92,7 +92,15 @@ namespace Entities.Asteroid
                 
                 var newAsteroid = asteroidSplits[i];
                 newAsteroid.transform.position = newPos;
-                newAsteroid.Initialize(halvedSpawnGrid[i]);
+                if (hitTransform != null)
+                {
+                    newAsteroid.Initialize(halvedSpawnGrid[i],true,hitTransform.position); 
+                }
+                else
+                {
+                    newAsteroid.Initialize(halvedSpawnGrid[i]);
+                }
+                
             }
 
             asteroid.Despawn();
@@ -101,10 +109,13 @@ namespace Entities.Asteroid
         public static List<AsteroidFragment> SpawnFragments(bool[,] spawnGrid, Transform parent,GameEntityFactory<AsteroidFragment> fragmentFactory)
         {
             var result = new List<AsteroidFragment>();
+
+            var width = spawnGrid.GetLength(0);
+            var height = spawnGrid.GetLength(1);
             
-            for (int x = 0; x < spawnGrid.GetLength(0); x++)
+            for (int x = 0; x < width; x++)
             {
-                for (int y = 0; y < spawnGrid.GetLength(1); y++)
+                for (int y = 0; y < height; y++)
                 {
                     var shouldSpawn = spawnGrid[x, y];
 

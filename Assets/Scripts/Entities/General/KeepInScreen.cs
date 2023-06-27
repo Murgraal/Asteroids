@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Data.ScriptableObjects;
+using UnityEngine;
+using Zenject;
 
 namespace Entities.General
 {
@@ -7,55 +10,47 @@ namespace Entities.General
         [SerializeField]
         private float offset = 0.05f;
 
-        private float _upperEdge;
-        private float _rightenMostEdge;
-
-        private bool _initialized;
+        [Inject] GameDataContainer _dataContainer;
+        private PlayField _playField => _dataContainer.Data.PlayFieldBoundaries;
         
-        private void Start()
-        {
-            
-        }
-
-        private void InitEdges()
-        {
-            _upperEdge = Camera.current.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y;
-            _rightenMostEdge = Camera.current.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
-        }
-
         private void Update()
         {
-            if (Camera.current == null) return;
-            
-            if (!_initialized)
-            {
-                InitEdges();
-                _initialized = true;
-            }
-            
             var newPos = transform.position;
             
-            if (transform.position.x > _rightenMostEdge)
+            if (transform.position.x > _playField.RightenMostEdge)
             {
-                newPos.x = -_rightenMostEdge;
+                newPos.x = -_playField.RightenMostEdge;
             }
-            else if(transform.position.x < -_rightenMostEdge)
+            else if(transform.position.x < -_playField.RightenMostEdge)
             {
-                newPos.x = _rightenMostEdge;
+                newPos.x = _playField.RightenMostEdge;
             }
 
-            if (transform.position.y > _upperEdge)
+            if (transform.position.y > _playField.UpperEdge)
             {
-                newPos.y = -_upperEdge;
+                newPos.y = -_playField.UpperEdge;
             }
-            else if (transform.position.y < -_upperEdge)
+            else if (transform.position.y < -_playField.UpperEdge)
             {
-                newPos.y = _upperEdge;
+                newPos.y = _playField.UpperEdge;
             }
 
             newPos.z = 0;
 
             transform.position = newPos;
         }
+    }
+
+    [Serializable]
+    public struct PlayField
+    {
+        public PlayField(float upperEdge, float rightenMostEdge)
+        {
+            UpperEdge = upperEdge;
+            RightenMostEdge = rightenMostEdge;
+        }
+        
+        public float UpperEdge;
+        public float RightenMostEdge;
     }
 }
